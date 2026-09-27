@@ -1,0 +1,16 @@
+# generated data — reproducible via etl/generate_data.py
+data/raw/
+data/bronze/
+data/silver/
+data/gold/
+# keep the committed DQ report? no — regenerated each run
+data/dq_report.json
+
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.env
+.DS_Store
+*.parquet
