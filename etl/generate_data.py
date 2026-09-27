@@ -5,11 +5,12 @@ Quality issues injected on purpose so the pipeline has real cleansing to do:
   - duplicate order rows, null emails, malformed dates, negative quantities,
     orders referencing missing products, inconsistent country casing.
 """
-import csv, random
+import csv, os, random
 from datetime import datetime, timedelta
 
 random.seed(42)
 OUT = "data/raw"
+os.makedirs(OUT, exist_ok=True)
 
 FIRST = ["Aarav","Diya","Arjun","Ishaan","Ananya","Rohan","Priya","Karan","Neha",
          "Vikram","Sneha","Aditya","Pooja","Rahul","Kavya","Manish","Divya","Suresh"]
