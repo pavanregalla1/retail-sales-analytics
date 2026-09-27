@@ -62,6 +62,7 @@ check("orders_orphan_fk_removed", True, f"removed={n3-len(ord_)}")
 n4 = len(ord_)
 valid_cust = set(cust["customer_id"])
 quarantine = ord_[~ord_["customer_id"].isin(valid_cust)].copy()
+quarantine["quarantine_reason"] = "customer cleansed out (null email)"
 ord_ = ord_[ord_["customer_id"].isin(valid_cust)]
 check("orders_quarantined_bad_customer", True, f"quarantined={n4-len(ord_)}")
 quarantine.to_csv(f"{GOLD}/quarantine_orders.csv", index=False)
