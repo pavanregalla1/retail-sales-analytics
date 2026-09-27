@@ -49,8 +49,7 @@ python3 etl/run_local.py       # bronze → silver → gold, DQ report to data/d
 python3 -m pytest tests/ -v    # verify outputs
 ```
 
-The Databricks notebook runs the identical logic on a real cluster — point the
-`landing` volume at the raw CSVs and Run All.
+The PySpark notebook is designed for execution on Databricks Runtime; this path has not yet been independently executed.
 
 ## Power BI dashboard
 
@@ -60,20 +59,23 @@ click-by-click steps in Power BI Desktop. The `.pbix` is built via the guide in
 powerbi/BUILD_GUIDE.md (needs Power BI Desktop, which is Windows-only, so the
 `.pbix` is not generated on Linux CI).
 
-The visuals below were rendered from the same gold-layer data the Power BI
-dashboard uses (via `docs/render_evidence.py`, matplotlib):
+**Note:** the visuals below are **matplotlib renders** produced from the
+gold-layer data (via `docs/render_evidence.py`) — they are **not** screenshots
+of Power BI Desktop. This repo provides only a Power BI build guide
+(`powerbi/BUILD_GUIDE.md`); no `.pbix` file is included, because Power BI
+Desktop is Windows-only.
 
 ![Executive overview — KPI cards, monthly revenue, revenue by category](docs/images/dashboard_overview.png)
 *Executive overview: KPI cards, monthly revenue trend, revenue by category —
-rendered from the same gold-layer data.*
+matplotlib render from the gold-layer data, not a Power BI screenshot.*
 
 ![Monthly revenue trend with MoM %](docs/images/dashboard_trend.png)
-*Monthly revenue trend with month-over-month % — rendered from the same
-gold-layer data.*
+*Monthly revenue trend with month-over-month % — matplotlib render from the
+gold-layer data, not a Power BI screenshot.*
 
 ![Revenue by category and top 10 products](docs/images/dashboard_category.png)
-*Revenue by category and top 10 products — rendered from the same gold-layer
-data.*
+*Revenue by category and top 10 products — matplotlib render from the
+gold-layer data, not a Power BI screenshot.*
 
 ## Pipeline evidence (from a real run)
 
@@ -93,8 +95,12 @@ gold, exit code 0.*
 
 ## Results and Limitations
 
-**Validated on a real run of this repo's pipeline** (run 2026-09-27, reproduced
-by CI on every push):
+**Validated on a real run of this repo's pipeline** (2026-09-27, reproduced on
+a clean checkout):
+
+CI (`.github/workflows/ci.yml`) runs the data generator, medallion pipeline,
+and pytest suite on every push — these exact steps were verified passing on a
+clean checkout.
 
 - 56,420 clean fact rows, $80.96M total revenue
 - 10/10 data-quality checks passing (dedup, date fixing, quantity/FK rules,
