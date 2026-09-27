@@ -121,12 +121,13 @@ clean checkout.
 
 ## Design decisions
 
-1. **Quarantine, don't silently drop.** Orders referencing customers removed
-   during cleansing go to `quarantine_orders` with a reason — auditable, recoverable.
-2. **Pre-aggregated marts.** `mart_monthly_sales` feeds the executive dashboard.
-   Pre-aggregated marts reduce dashboard query workload and support scalable reporting.
-3. **DQ as a gate, not a report.** The Databricks job *fails* if any check
-   breaks (null keys, broken referential integrity, negative revenue) — bad data
-   never reaches the dashboard silently.
-4. **Lineage on every bronze row** (`_ingested_at`, `_source_file`) — you can
-   always trace a gold number back to its source file.
+- Bad rows go to quarantine instead of just disappearing. Orders that point to
+  customers removed during cleansing land in `quarantine_orders` with a reason
+  attached, so they can be audited or recovered later.
+- The executive dashboard reads from `mart_monthly_sales`, a pre-aggregated
+  mart — it isn't scanning raw tables every time someone opens the dashboard.
+- Data-quality checks are a gate, not a report. If any check fails (null keys,
+  broken references, negative revenue) the Databricks job fails outright, so
+  bad data never reaches the dashboard quietly.
+- Every bronze row carries `_ingested_at` and `_source_file`, so any number in
+  the gold layer can be traced back to the file it came from.
