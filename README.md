@@ -1,4 +1,4 @@
-# Retail Sales Analytics — Batch Lakehouse & Power BI Pipeline
+# Retail Sales Analytics — Batch Lakehouse & Data Pipeline
 
 A complete, runnable analytics project: messy raw e-commerce data → cleansed
 lakehouse → star-schema gold layer → KPI queries → Power BI dashboard.
